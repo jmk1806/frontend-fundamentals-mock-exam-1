@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useCalculationContext } from 'domains/calculation';
 import type { SavingsProduct } from '../types/savings';
 import { useSavingsProducts } from '../hooks/useSavingsProducts';
@@ -33,6 +33,9 @@ export function SavingsProductProvider({ children }: SavingsProductProviderProps
       }),
     [savingsProducts, monthlyPaymentValue, savingPeriod]
   );
+  const clearSelection = useCallback(() => {
+    setSelectedProduct(null);
+  }, []);
 
   useEffect(() => {
     const isSelectedProductInFilteredList = filteredSavingsProducts.some(product => product.id === selectedProduct?.id);
@@ -40,15 +43,11 @@ export function SavingsProductProvider({ children }: SavingsProductProviderProps
     if (selectedProduct && !isSelectedProductInFilteredList) {
       clearSelection();
     }
-  }, [filteredSavingsProducts, selectedProduct]);
+  }, [filteredSavingsProducts, selectedProduct, clearSelection]);
 
-  const selectProduct = (product: SavingsProduct) => {
+  const selectProduct = useCallback((product: SavingsProduct) => {
     setSelectedProduct(product);
-  };
-
-  const clearSelection = () => {
-    setSelectedProduct(null);
-  };
+  }, []);
 
   return (
     <SavingsProductContext.Provider value={{ selectedProduct, selectProduct, clearSelection, filteredSavingsProducts }}>
