@@ -1,4 +1,4 @@
-import { Border, colors, ListHeader, ListRow, Spacing } from 'tosslib';
+import { Assets, Border, colors, ListHeader, ListRow, Spacing } from 'tosslib';
 import { useCalculationResults } from '../hooks/useCalculationResults';
 import { useSavingsProductContext } from 'domains/savings-products';
 import { formatter } from 'utils';
@@ -47,6 +47,7 @@ function ExpectedResult({ result }: { result: CalculationResultsData }) {
 
 function RecommendedProducts() {
   const { filteredSavingsProducts } = useSavingsProductContext();
+  const { selectedProduct, selectProduct } = useSavingsProductContext();
 
   const topTwoProducts = filteredSavingsProducts.sort((a, b) => b.annualRate - a.annualRate).slice(0, 2);
 
@@ -54,6 +55,7 @@ function RecommendedProducts() {
     <>
       {topTwoProducts.map(product => {
         const { id, name, annualRate, availableTerms, minMonthlyAmount, maxMonthlyAmount } = product;
+        const isSelected = selectedProduct?.id === id;
 
         return (
           <ListRow
@@ -69,7 +71,8 @@ function RecommendedProducts() {
                 bottomProps={{ fontSize: 13, color: colors.grey600 }}
               />
             }
-            onClick={() => {}}
+            right={isSelected ? <Assets.Icon name="icon-check-circle-green" /> : undefined}
+            onClick={() => selectProduct(product)}
           />
         );
       })}
