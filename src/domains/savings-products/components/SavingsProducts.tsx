@@ -1,12 +1,28 @@
 import { Assets, colors, ListRow } from 'tosslib';
 import { useSavingsProducts } from '../hooks/useSavingsProducts';
 import { formatter } from 'utils';
+import { useCalculationContext } from 'domains/calculation/contexts';
+import { useMemo } from 'react';
 
 export function SavingsProducts() {
   const { savingsProducts } = useSavingsProducts();
+  const { monthlyPaymentValue, savingPeriod } = useCalculationContext();
+  const filteredSavingsProducts = useMemo(
+    () =>
+      savingsProducts.filter(savingsProduct => {
+        const { minMonthlyAmount, maxMonthlyAmount, availableTerms } = savingsProduct;
+        return (
+          Number(monthlyPaymentValue) >= minMonthlyAmount &&
+          Number(monthlyPaymentValue) <= maxMonthlyAmount &&
+          availableTerms === savingPeriod
+        );
+      }),
+    [savingsProducts, monthlyPaymentValue, savingPeriod]
+  );
+
   return (
     <>
-      {savingsProducts.map(savingsProduct => {
+      {filteredSavingsProducts.map(savingsProduct => {
         const { id, name, annualRate, availableTerms, minMonthlyAmount, maxMonthlyAmount } = savingsProduct;
 
         return (
