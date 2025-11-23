@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import type { SavingsProduct } from '../types/savings';
 
 const QUERY_KEY_SAVINGS_PRODUCTS = 'savingsProducts';
@@ -14,7 +14,10 @@ async function fetchSavingsProducts(): Promise<SavingsProduct[]> {
 }
 
 export function useSavingsProducts() {
-  const savingsProductsQuery = useQuery(QUERY_KEY_SAVINGS_PRODUCTS, fetchSavingsProducts);
+  const savingsProductsQuery = useQuery({
+    queryKey: [QUERY_KEY_SAVINGS_PRODUCTS],
+    queryFn: fetchSavingsProducts,
+  });
 
   return {
     savingsProducts: savingsProductsQuery.data ?? [],
