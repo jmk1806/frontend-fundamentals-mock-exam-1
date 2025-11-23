@@ -1,10 +1,10 @@
-import { Calculation } from 'domains/calculation';
+import { Calculation, CalculationProvider } from 'domains/calculation';
 import { SavingsProducts } from 'domains/savings-products';
 import { Border, NavigationBar, Spacing, Tab } from 'tosslib';
 
 export function SavingsCalculatorPage() {
   return (
-    <>
+    <CalculationProvider>
       <NavigationBar title="적금 계산기" />
 
       <Spacing size={16} />
@@ -103,6 +103,6 @@ export function SavingsCalculatorPage() {
 
       {/* 아래는 사용자가 적금 상품을 선택하지 않고 계산 결과 탭을 선택했을 때 출력해주세요. */}
       {/* <ListRow contents={<ListRow.Texts type="1RowTypeA" top="상품을 선택해주세요." />} /> */}
-    </>
+    </CalculationProvider>
   );
 }

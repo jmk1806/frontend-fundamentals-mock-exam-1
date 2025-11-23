@@ -1,5 +1,5 @@
 import { SelectBottomSheet, Spacing, TextField } from 'tosslib';
-import { useCalculation } from '../hooks/useCalculation';
+import { useCalculationContext } from '../contexts/CalculationContext';
 import { formatNumberWithCommas } from 'utils';
 
 export function Calculation() {
@@ -10,7 +10,7 @@ export function Calculation() {
     handleGoalAmountChange,
     handleMonthlyPaymentChange,
     handleSavingPeriodChange,
-  } = useCalculation();
+  } = useCalculationContext();
 
   return (
     <>
