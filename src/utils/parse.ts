@@ -6,3 +6,10 @@ export function parseNumberFromString(value: string): number {
 export function formatNumberToString(value: number): string {
   return value === 0 ? '' : value.toString();
 }
+
+export const formatter = new Intl.NumberFormat('ko-KR');
+
+export function formatNumberWithCommas(value: string): string {
+  const numericValue = parseNumberFromString(value);
+  return numericValue === 0 ? '' : formatter.format(numericValue);
+}
