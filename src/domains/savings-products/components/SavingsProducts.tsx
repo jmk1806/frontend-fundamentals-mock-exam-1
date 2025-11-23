@@ -3,10 +3,12 @@ import { useSavingsProducts } from '../hooks/useSavingsProducts';
 import { formatter } from 'utils';
 import { useCalculationContext } from 'domains/calculation/contexts';
 import { useMemo } from 'react';
+import { useSavingsProductContext } from '../contexts/SavingsProductContext';
 
 export function SavingsProducts() {
   const { savingsProducts } = useSavingsProducts();
   const { monthlyPaymentValue, savingPeriod } = useCalculationContext();
+  const { selectedProduct, selectProduct } = useSavingsProductContext();
   const filteredSavingsProducts = useMemo(
     () =>
       savingsProducts.filter(savingsProduct => {
@@ -24,6 +26,7 @@ export function SavingsProducts() {
     <>
       {filteredSavingsProducts.map(savingsProduct => {
         const { id, name, annualRate, availableTerms, minMonthlyAmount, maxMonthlyAmount } = savingsProduct;
+        const isSelected = selectedProduct?.id === id;
 
         return (
           <ListRow
@@ -39,8 +42,8 @@ export function SavingsProducts() {
                 bottomProps={{ fontSize: 13, color: colors.grey600 }}
               />
             }
-            right={<Assets.Icon name="icon-check-circle-green" />}
-            onClick={() => {}}
+            right={isSelected ? <Assets.Icon name="icon-check-circle-green" /> : undefined}
+            onClick={() => selectProduct(savingsProduct)}
           />
         );
       })}
