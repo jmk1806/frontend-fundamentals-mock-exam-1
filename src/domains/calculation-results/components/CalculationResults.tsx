@@ -49,7 +49,7 @@ function RecommendedProducts() {
   const { filteredSavingsProducts } = useSavingsProductContext();
   const { selectedProduct, selectProduct } = useSavingsProductContext();
 
-  const topTwoProducts = filteredSavingsProducts.sort((a, b) => b.annualRate - a.annualRate).slice(0, 2);
+  const topTwoProducts = [...filteredSavingsProducts].sort((a, b) => b.annualRate - a.annualRate).slice(0, 2);
 
   return (
     <>
