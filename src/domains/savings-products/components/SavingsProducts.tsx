@@ -1,34 +1,9 @@
 import { Assets, colors, ListRow } from 'tosslib';
-import { useSavingsProducts } from '../hooks/useSavingsProducts';
 import { formatter } from 'utils';
-import { useCalculationContext } from 'domains/calculation/contexts';
-import { useEffect, useMemo } from 'react';
 import { useSavingsProductContext } from '../contexts/SavingsProductContext';
 
 export function SavingsProducts() {
-  const { savingsProducts } = useSavingsProducts();
-  const { monthlyPaymentValue, savingPeriod } = useCalculationContext();
-  const { selectedProduct, selectProduct, clearSelection } = useSavingsProductContext();
-  const filteredSavingsProducts = useMemo(
-    () =>
-      savingsProducts.filter(savingsProduct => {
-        const { minMonthlyAmount, maxMonthlyAmount, availableTerms } = savingsProduct;
-        return (
-          Number(monthlyPaymentValue) >= minMonthlyAmount &&
-          Number(monthlyPaymentValue) <= maxMonthlyAmount &&
-          availableTerms === savingPeriod
-        );
-      }),
-    [savingsProducts, monthlyPaymentValue, savingPeriod]
-  );
-
-  useEffect(() => {
-    const isSelectedProductInFilteredList = filteredSavingsProducts.some(product => product.id === selectedProduct?.id);
-
-    if (selectedProduct && !isSelectedProductInFilteredList) {
-      clearSelection();
-    }
-  }, [filteredSavingsProducts, selectedProduct, clearSelection]);
+  const { selectedProduct, selectProduct, filteredSavingsProducts } = useSavingsProductContext();
 
   return (
     <>
