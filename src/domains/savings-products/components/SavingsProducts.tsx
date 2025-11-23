@@ -1,8 +1,8 @@
 import { Assets, colors, ListRow } from 'tosslib';
 import { useSavingsProducts } from '../hooks/useSavingsProducts';
+import { formatter } from 'utils';
 
 export function SavingsProducts() {
-  const formatter = new Intl.NumberFormat('ko-KR');
   const { savingsProducts } = useSavingsProducts();
   return (
     <>
