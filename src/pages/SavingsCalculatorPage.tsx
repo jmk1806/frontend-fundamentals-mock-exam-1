@@ -1,8 +1,17 @@
+import { useState } from 'react';
 import { Calculation, CalculationProvider } from 'domains/calculation';
 import { SavingsProducts, SavingsProductProvider } from 'domains/savings-products';
 import { Border, NavigationBar, Spacing, Tab } from 'tosslib';
 
 export function SavingsCalculatorPage() {
+  const [selectedTab, setSelectedTab] = useState<'products' | 'results'>('products');
+
+  const handleTabChange = (value: string) => {
+    if (value === 'products' || value === 'results') {
+      setSelectedTab(value);
+    }
+  };
+
   return (
     <CalculationProvider>
       <SavingsProductProvider>
@@ -16,19 +25,19 @@ export function SavingsCalculatorPage() {
         <Border height={16} />
         <Spacing size={8} />
 
-        <Tab onChange={() => {}}>
-          <Tab.Item value="products" selected={true}>
+        <Tab onChange={handleTabChange}>
+          <Tab.Item value="products" selected={selectedTab === 'products'}>
             적금 상품
           </Tab.Item>
-          <Tab.Item value="results" selected={false}>
+          <Tab.Item value="results" selected={selectedTab === 'results'}>
             계산 결과
           </Tab.Item>
         </Tab>
 
-        <SavingsProducts />
+        {selectedTab === 'products' && <SavingsProducts />}
 
-        {/* 아래는 계산 결과 탭 내용이에요. 계산 결과 탭을 구현할 때 주석을 해제해주세요. */}
-        {/* <Spacing size={8} />
+      {/* 아래는 계산 결과 탭 내용이에요. 계산 결과 탭을 구현할 때 주석을 해제해주세요. */}
+      {/* <Spacing size={8} />
 
       <ListRow
         contents={
